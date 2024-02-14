@@ -109,6 +109,7 @@ void cw(const std::string& message) {
 
 
 int main() {
+    //loading the font gave me a ton of problems :/
     sf::Font font;
     if (!font.loadFromFile("ComicSansMS3.ttf"))
     {
