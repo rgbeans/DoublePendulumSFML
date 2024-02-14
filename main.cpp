@@ -10,7 +10,7 @@ const double g = 9.80665;
 const int screenWidth = 2560;
 const int screenHeight = 1440;
 
-class Fortnite {}
+class Fortnite {};
 
 class Pendulum {
 public:
