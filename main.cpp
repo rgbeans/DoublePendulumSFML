@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <filesystem>
 #include <iostream>
 #include <omp.h>
 #define _USE_MATH_DEFINES
@@ -41,7 +43,7 @@ public:
     }
 
     //set color, but in HSV and only H
-    void setColorHue(float hue) {
+    void setColorHue(float hue, float opacity) {
         // i love hardcoding!!!!
         float r, g, b;
         int i = floor(hue * 6);
@@ -59,7 +61,7 @@ public:
         }
 
         //ok now that the hardcoding is done we can fill the colors
-        sf::Color color(r * 255, g * 255, b * 255, 255);
+        sf::Color color(r * 255, g * 255, b * 255, opacity);
         bob1.setFillColor(color);
         bob2.setFillColor(color);
         arm1[0].color = color;
@@ -107,7 +109,20 @@ void cw(const std::string& message) {
 
 
 int main() {
+    sf::Font font;
+    if (!font.loadFromFile("ComicSansMS3.ttf"))
+    {
+        // Error handling
+        std::cout << "Failed to load font" << std::endl;
+        return EXIT_FAILURE;
+    }
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Double Pendulum", sf::Style::Fullscreen);
+
+
+    //watermark
+    sf::Text watermark("@greenbeans9814 on instagram", font, 60);
+    watermark.setFillColor(sf::Color(255, 255, 255, 18));
+    watermark.setPosition(screenWidth / 2 - watermark.getGlobalBounds().width / 2, screenHeight / 2 - watermark.getGlobalBounds().height / 2);
 
     int numPendulums = 10000; //num of pendulum
     double minAngle = 135.0; //min angle in degrees (0 is hanging downwards vertically)
@@ -133,7 +148,7 @@ int main() {
             double theta = (minAngle + i * (maxAngle - minAngle) / (numPendulums - 1)) * (M_PI / 180.0);
             Pendulum pendulum(300, 300, 1, 2, theta, theta);
             //make them colors on the hsv scale dynamically
-            pendulum.setColorHue((float)i / numPendulums);
+            pendulum.setColorHue((float)i / numPendulums, 128);
             pendulums.push_back(pendulum);
         }
     }
@@ -160,9 +175,12 @@ int main() {
             }
         }
 
+
         //then clear the window and draw all the pendulums seperately from the calculation because
         //sfml don't like multithreading like that (or so i heard)
         window.clear();
+        //draw the watermark
+        window.draw(watermark);
         for (Pendulum& pendulum : pendulums) {
             pendulum.draw(window);
         }
