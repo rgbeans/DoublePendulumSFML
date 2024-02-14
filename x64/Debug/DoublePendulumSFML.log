@@ -1,27 +1,27 @@
 ﻿  main.cpp
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(49,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(64,52): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(64,45): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(64,36): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(64,27): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,103): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,103): warning C4244:         with
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,103): warning C4244:         [
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,103): warning C4244:             T=float
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,103): warning C4244:         ]
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,59): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,59): warning C4244:         with
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,59): warning C4244:         [
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,59): warning C4244:             T=float
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(89,59): warning C4244:         ]
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,104): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,104): warning C4244:         with
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,104): warning C4244:         [
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,104): warning C4244:             T=float
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,104): warning C4244:         ]
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,60): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,60): warning C4244:         with
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,60): warning C4244:         [
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,60): warning C4244:             T=float
-C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(91,60): warning C4244:         ]
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(50,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(65,52): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(65,45): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(65,36): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(65,27): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,103): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,103): warning C4244:         with
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,103): warning C4244:         [
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,103): warning C4244:             T=float
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,103): warning C4244:         ]
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,59): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,59): warning C4244:         with
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,59): warning C4244:         [
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,59): warning C4244:             T=float
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(90,59): warning C4244:         ]
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,104): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,104): warning C4244:         with
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,104): warning C4244:         [
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,104): warning C4244:             T=float
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,104): warning C4244:         ]
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,60): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,60): warning C4244:         with
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,60): warning C4244:         [
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,60): warning C4244:             T=float
+C:\Users\deanp\source\repos\DoublePendulumSFML\DoublePendulumSFML\main.cpp(92,60): warning C4244:         ]
   DoublePendulumSFML.vcxproj -> C:\Users\deanp\source\repos\DoublePendulumSFML\x64\Debug\DoublePendulumSFML.exe

@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <filesystem>
 #include <iostream>
+#include <vector>
 #include <omp.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -121,8 +122,9 @@ int main() {
 
 
     //watermark
-    sf::Text watermark("@greenbeans9814 on instagram", font, 60);
-    watermark.setFillColor(sf::Color(255, 255, 255, 18));
+    sf::Text watermark("@greenbeans9814 on instagram", font, 100);
+    sf::Vector2f watermarkVelocity(200.f, 150.f);
+    watermark.setFillColor(sf::Color(255, 255, 255, 16));
     watermark.setPosition(screenWidth / 2 - watermark.getGlobalBounds().width / 2, screenHeight / 2 - watermark.getGlobalBounds().height / 2);
 
     int numPendulums = 10000; //num of pendulum
@@ -130,6 +132,7 @@ int main() {
     double maxAngle = 145.0; //max angle in degrees
     std::vector<Pendulum> pendulums;
     bool isPaused = true; //is the sim paused initially
+    bool watermarkMovin = false; //does the watermark move
 
     //if its just one pendulum do these (because dividing by 0 is fun)
     if (numPendulums == 1)
@@ -154,6 +157,8 @@ int main() {
         }
     }
 
+    sf::Clock clock;
+
     //main loop
     while (window.isOpen()) {
         sf::Event event;
@@ -166,6 +171,8 @@ int main() {
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
                 window.close();
         }
+
+        sf::Time deltaTime = clock.restart();
 
         //if sim is unpaused step over all the pendulums
         if (!isPaused) {
@@ -180,8 +187,22 @@ int main() {
         //then clear the window and draw all the pendulums seperately from the calculation because
         //sfml don't like multithreading like that (or so i heard)
         window.clear();
-        //draw the watermark
+
+        if (watermarkMovin)
+        {
+            //draw the watermark
+            float dt = deltaTime.asSeconds();
+            watermark.move(watermarkVelocity.x * dt, watermarkVelocity.y * dt);
+
+            //check for collision
+            if (watermark.getPosition().x < 0 || watermark.getPosition().x + watermark.getGlobalBounds().width > screenWidth)
+                watermarkVelocity.x = -watermarkVelocity.x;
+            if (watermark.getPosition().y < 0 || watermark.getPosition().y + watermark.getGlobalBounds().height > screenHeight)
+                watermarkVelocity.y = -watermarkVelocity.y;
+        }
+
         window.draw(watermark);
+
         for (Pendulum& pendulum : pendulums) {
             pendulum.draw(window);
         }
