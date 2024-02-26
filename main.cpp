@@ -1,15 +1,21 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Image.hpp>
 #include <filesystem>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
 #include <vector>
+#include <string>
 #include <omp.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <math.h>
 
 //stuff
-const double g = 9.80665;
+const long double g = 9.80665;
 const int screenWidth = 2560;
 const int screenHeight = 1440;
 
@@ -17,20 +23,60 @@ class Fortnite {};
 
 class Pendulum {
 public:
-    double L1, L2; // lengths
-    double m1, m2; // masses
-    double theta1, theta2; //angles
-    double omega1, omega2; //angluar velocity
+    long double L1, L2; // lengths
+    long double m1, m2; // masses
+    long double theta1, theta2; //angles
+    long double omega1, omega2; //angluar velocity
+    long double time;
+    long double step;
     sf::CircleShape bob1, bob2; //bob the builder
     sf::Vertex arm1[2], arm2[2]; //arms
 
     //ctor
-    Pendulum(double L1, double L2, double m1, double m2, double theta1, double theta2)
-        : L1(L1), L2(L2), m1(m1), m2(m2), theta1(theta1), theta2(theta2), omega1(0), omega2(0) {
-        bob1.setRadius(1);
-        bob2.setRadius(2);
-        bob1.setOrigin(1, 1);
-        bob2.setOrigin(2, 2);
+    Pendulum(long double L1, long double L2, long double m1, long double m2, long double theta1, long double theta2, long double step)
+        : L1(L1), L2(L2), m1(m1), m2(m2), theta1(theta1), theta2(theta2), omega1(0), omega2(0), step(step) {
+        bob1.setRadius(10);
+        bob2.setRadius(20);
+        bob1.setOrigin(10, 10);
+        bob2.setOrigin(20, 20);
+    }
+
+    // Get the x position of the first mass
+    long double getX1() const {
+        return L1 * std::sin(theta1);
+    }
+
+    // Get the y position of the first mass
+    long double getY1() const {
+        return L1 * std::cos(theta1);
+    }
+
+    // Get the x position of the second mass
+    long double getX2() const {
+        return getX1() + L2 * std::sin(theta2);
+    }
+
+    // Get the y position of the second mass
+    long double getY2() const {
+        return getY1() + L2 * std::cos(theta2);
+    }
+
+
+    void getPos(const std::string& filePath) const {
+        std::ofstream outFile(filePath); // Open file for writing
+        if (outFile.is_open()) { // Check if the file is opened successfully
+            outFile << "bob1 x: " << getX1() << "  y: " << getY1()
+                << "    bob2 x: " << getX2() << " y: " << getY2() << std::endl;
+            outFile.close(); // Close the file
+        }
+        else {
+            std::cerr << "Unable to open file for writing!" << std::endl;
+        }
+    }
+
+    void getPos2() const {
+        std::cout << "bob1 x: " << getX1() << "  y: " << getY1()
+            << "    bob2 x: " << getX2() << " y: " << getY2() << std::endl;
     }
 
     //set color in rgb and predefined colors
@@ -72,11 +118,12 @@ public:
     }
 
     //Runge-Kutta step
-    void step(double dt) {
-        double dtheta1 = omega1;
-        double dtheta2 = omega2;
-        double domega1 = (m2 * g * std::sin(theta2) * std::cos(theta1 - theta2) - m2 * std::sin(theta1 - theta2) * (L1 * omega1 * omega1 * std::cos(theta1 - theta2) + L2 * omega2 * omega2) - (m1 + m2) * g * std::sin(theta1)) / (L1 * (m1 + m2 * std::sin(theta1 - theta2) * std::sin(theta1 - theta2)));
-        double domega2 = ((m1 + m2) * (L1 * omega1 * omega1 * std::sin(theta1 - theta2) - g * std::sin(theta2) + g * std::sin(theta1) * std::cos(theta1 - theta2)) + m2 * L2 * omega2 * omega2 * std::sin(theta1 - theta2) * std::cos(theta1 - theta2)) / (L2 * (m1 + m2 * std::sin(theta1 - theta2) * std::sin(theta1 - theta2)));
+    void RKstep(long double dt) {
+        time += step;
+        long double dtheta1 = omega1;
+        long double dtheta2 = omega2;
+        long double domega1 = (m2 * g * std::sin(theta2) * std::cos(theta1 - theta2) - m2 * std::sin(theta1 - theta2) * (L1 * omega1 * omega1 * std::cos(theta1 - theta2) + L2 * omega2 * omega2) - (m1 + m2) * g * std::sin(theta1)) / (L1 * (m1 + m2 * std::sin(theta1 - theta2) * std::sin(theta1 - theta2)));
+        long double domega2 = ((m1 + m2) * (L1 * omega1 * omega1 * std::sin(theta1 - theta2) - g * std::sin(theta2) + g * std::sin(theta1) * std::cos(theta1 - theta2)) + m2 * L2 * omega2 * omega2 * std::sin(theta1 - theta2) * std::cos(theta1 - theta2)) / (L2 * (m1 + m2 * std::sin(theta1 - theta2) * std::sin(theta1 - theta2)));
         theta1 += dtheta1 * dt;
         theta2 += dtheta2 * dt;
         omega1 += domega1 * dt;
@@ -87,18 +134,18 @@ public:
     void draw(sf::RenderWindow& window) {
         //set the arm positions
         arm1[0].position = sf::Vector2f(screenWidth / 2, screenHeight / 2);
-        arm1[1].position = sf::Vector2f((screenWidth / 2) + L1 * std::sin(theta1), (screenHeight / 2) + L1 * std::cos(theta1));
+        arm1[1].position = sf::Vector2f((screenWidth / 2) + 300 * std::sin(theta1), (screenHeight / 2) + 300 * std::cos(theta1));
         arm2[0].position = arm1[1].position;
-        arm2[1].position = sf::Vector2f(arm2[0].position.x + L2 * std::sin(theta2), arm2[0].position.y + L2 * std::cos(theta2));
+        arm2[1].position = sf::Vector2f(arm2[0].position.x + 300 * std::sin(theta2), arm2[0].position.y + 300 * std::cos(theta2));
         //i dont like bob so i got rid of him
-        /*bob1.setPosition(arm1[1].position);
-        bob2.setPosition(arm2[1].position);*/
+        bob1.setPosition(arm1[1].position);
+        bob2.setPosition(arm2[1].position);
 
         window.draw(arm1, 2, sf::Lines);
         window.draw(arm2, 2, sf::Lines);
         //dont draw bob
-        /*window.draw(bob1);
-        window.draw(bob2);*/
+        window.draw(bob1);
+        window.draw(bob2);
 
     }
 };
@@ -108,6 +155,12 @@ void cw(const std::string& message) {
     std::cout << message << std::endl;
 }
 
+inline std::string to_string_precise(long double _Val, int precision)
+{
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << _Val;
+    return out.str();
+}
 
 int main() {
     //loading the font gave me a ton of problems :/
@@ -118,18 +171,18 @@ int main() {
         std::cout << "Failed to load font" << std::endl;
         return EXIT_FAILURE;
     }
-    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Double Pendulum", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Double Pendulum"/*, sf::Style::Fullscreen*/);
 
 
     //watermark
-    sf::Text watermark("@greenbeans9814 on instagram", font, 100);
+    sf::Text watermark("@greenbeans9814 on instagram", font, 50);
     sf::Vector2f watermarkVelocity(200.f, 150.f);
-    watermark.setFillColor(sf::Color(255, 255, 255, 16));
+    watermark.setFillColor(sf::Color(255, 255, 255, 64));
     watermark.setPosition(screenWidth / 2 - watermark.getGlobalBounds().width / 2, screenHeight / 2 - watermark.getGlobalBounds().height / 2);
 
-    int numPendulums = 10000; //num of pendulum
-    double minAngle = 135.0; //min angle in degrees (0 is hanging downwards vertically)
-    double maxAngle = 145.0; //max angle in degrees
+    int numPendulums = 1; //num of pendulum
+    long double minAngle = 177.0; //min angle in degrees (0 is hanging downwards vertically)
+    long double maxAngle = 179.9; //max angle in degrees
     std::vector<Pendulum> pendulums;
     bool isPaused = true; //is the sim paused initially
     bool watermarkMovin = false; //does the watermark move
@@ -138,10 +191,14 @@ int main() {
     if (numPendulums == 1)
     {
         //different angle for this one because funny
-        double theta = 110 * (M_PI / 180);
-        Pendulum pendulum(300, 300, 1, 2, theta, theta);
-        pendulum.setColor(sf::Color::Red);
+        long double theta = 110 * (M_PI / 180);
+        long double theta2 = theta + 0.00000000000001;
+        Pendulum pendulum(1, 1, 1, 2, theta, theta, 0.000000001); //0.000000001
+        Pendulum pendulum2(1, 1, 1, 2, theta2, theta2, 0.000000001);
+        pendulum.setColor(sf::Color::Green);
+        pendulum2.setColor(sf::Color::Red);
         pendulums.push_back(pendulum);
+        pendulums.push_back(pendulum2);
     }
     else
     {
@@ -150,7 +207,7 @@ int main() {
         for (int i = 0; i < numPendulums; ++i) {
             //dynamically set the angle proportional to the amount of pendulums
             double theta = (minAngle + i * (maxAngle - minAngle) / (numPendulums - 1)) * (M_PI / 180.0);
-            Pendulum pendulum(300, 300, 1, 2, theta, theta);
+            Pendulum pendulum(1, 1, 1, 2, theta, theta, 0.000000001);
             //make them colors on the hsv scale dynamically
             pendulum.setColorHue((float)i / numPendulums, 128);
             pendulums.push_back(pendulum);
@@ -174,14 +231,53 @@ int main() {
 
         sf::Time deltaTime = clock.restart();
 
+        long double timeIntervals[] = { 10.0, 10.0, 10.0 };
+        
+        
+
         //if sim is unpaused step over all the pendulums
         if (!isPaused) {
             //i love parallel processing!!!
-            #pragma omp parallel for
+            //#pragma omp parallel for
             for (int i = 0; i < pendulums.size(); ++i) {
-                pendulums[i].step(0.05);
+                for (int j = 0; j <= 100000; j++)
+                {
+                    pendulums[i].RKstep(pendulums[i].step);
+                    // Check if the totalTime has exceeded the logInterval
+                    if (pendulums[0].time >= timeIntervals[i]) {
+                        isPaused = true;
+
+                        sf::Texture texture;
+                        texture.create(window.getSize().x, window.getSize().y);
+                        texture.update(window);
+
+                        // Convert the texture to an image
+                        sf::Image screenshot = texture.copyToImage();
+
+                        // Save the image to a file
+                        /*std::string screenshotFilename = "screenshot" + std::to_string(i) + std::to_string(timeIntervals[i]) + ".png";
+                        screenshot.saveToFile(screenshotFilename);
+
+                        std::string outputFilename = "output" + std::to_string(i) + std::to_string(timeIntervals[i]) + ".txt";
+                        pendulums[i].getPos(outputFilename);*/
+                        timeIntervals[i] = 100000.0;
+                    }
+                }
             }
         }
+
+        watermark.setString("x1:" + to_string_precise(pendulums[0].getX1(), 33) + "\nx2:" +
+            to_string_precise(pendulums[0].getX2(),33) + "\ny1:" +
+            to_string_precise(pendulums[0].getY1(),33) + "\ny2:" +
+            to_string_precise(pendulums[0].getY2(),33) + "\ntime:" + 
+            to_string_precise(pendulums[0].time, 33) + "\nx1:" +
+            to_string_precise(pendulums[1].getX1(), 33) + "\nx2:" +
+            to_string_precise(pendulums[1].getX2(), 33) + "\ny1:" +
+            to_string_precise(pendulums[1].getY1(), 33) + "\ny2:" +
+            to_string_precise(pendulums[1].getY2(), 33) + "\ntime:" +
+            to_string_precise(pendulums[1].time, 33) + "");
+
+        
 
 
         //then clear the window and draw all the pendulums seperately from the calculation because
