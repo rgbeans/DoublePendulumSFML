@@ -124,7 +124,7 @@ int main() {
     //watermark
     sf::Text watermark("@greenbeans9814 on instagram", font, 100);
     sf::Vector2f watermarkVelocity(200.f, 150.f);
-    watermark.setFillColor(sf::Color(255, 255, 255, 16));
+    watermark.setFillColor(sf::Color(255, 255, 255, 0));
     watermark.setPosition(screenWidth / 2 - watermark.getGlobalBounds().width / 2, screenHeight / 2 - watermark.getGlobalBounds().height / 2);
 
     int numPendulums = 10000; //num of pendulum
